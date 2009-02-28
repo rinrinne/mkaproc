@@ -1,0 +1,25 @@
+<config>
+  <mkvtoolnix>
+    <path>/path/to/MKVtoolnix</path>
+  </mkvtoolnix>
+  <matroska>
+    <cuesheet description="CUE Sheet">
+      <filter type="mp3">
+        <command>cueproc</command>
+        <option>-c lame_eyed3 -x "/path/to/lame" -p "-V3 --vbr-new --quiet" -d "${ARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
+        <thumb />
+      </filter>
+      <filter type="ogg">
+        <command>cueproc</command>
+        <option>-c oggenc -x "/path/to/oggenc2" -p "-q 6" -d "${ARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
+      </filter>
+    </cuesheet>
+    <cover description="Cover Image">
+      <filter>
+        <command>/path/to/convert</command>
+        <option>-resize 256x256</option>
+        <format>s_%s</format>
+      </filter>
+    </cover>
+  </matroska>
+</config>
