@@ -3,6 +3,7 @@
 import sys, optparse, codecs, os, os.path, re
 import xml.etree.ElementTree as ET
 import Matroska
+import Config
 
 from textfile import *
 
@@ -16,6 +17,12 @@ def delete_files(items):
 	for item in items:
 		if(item.name and os.path.isfile(item.name)):
 			os.remove(item.name)
+
+def exec_filter(path, cmd, charset):
+	orig_path = os.environ['path']
+	os.environ['path'] = os.pathsep.join((path, orig_path))
+	os.system(' '.join(cmd).encode(charset))
+	os.environ['path'] = orig_path
 
 class Convert:
 	def __init__(self):
@@ -76,12 +83,23 @@ if __name__ == '__main__':
 	# Parse command-line arguments.
 	(options, args) = parser.parse_args()
 	
+	# codec check
+	try:
+		charset = codecs.lookup(options.syscharset)
+	except LookupError, e:
+		options.syscharset = sys.getdefaultencoding()		
+
+	try:
+		charset = codecs.lookup(options.atcharset)
+	except LookupError, e:
+		options.atcharset = sys.getdefaultencoding()		
+
 	# Wrap IO streams.
 	sys.stdout = codecs.getwriter(options.syscharset)(sys.stdout)
 	sys.stderr = codecs.getwriter(options.syscharset)(sys.stderr)
 	
 	try:
-		config = Matroska.Config(options.configfile)
+		config = Config.Config(options.configfile)
 	except Exception, e:
 		sys.stderr.write(str(e) + "\n")
 		sys.exit(1)
@@ -168,7 +186,7 @@ if __name__ == '__main__':
 					flt = item.filters[0]
 					thumbfile = flt.format % item.name
 					cmd = [flt.command, flt.option, "\"%s\"" % item.name, "\"%s\"" % thumbfile]
-					os.system(' '.join(cmd).encode(options.syscharset))
+					exec_filter(flt.path, cmd, options.syscharset)
 					
 					obj = Matroska.Item()
 					obj.name = thumbfile
@@ -182,9 +200,10 @@ if __name__ == '__main__':
 				if flt.thumb:
 					cmd.append("--albumart-files \"%s\"" % thumbfile)
 				cmd.append(sheet.name)
-				print "cmdline: %s" % ' '.join(cmd).encode(options.syscharset)
-				os.system(' '.join(cmd).encode(options.syscharset))
+#				print "cmdline: %s" % ' '.join(cmd).encode(options.syscharset)
 				
+				exec_filter(flt.path, cmd, options.syscharset)
+
 			# delete extract file
 			delete_files(atts)
 			delete_files(trks)

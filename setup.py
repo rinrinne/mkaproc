@@ -4,7 +4,7 @@
 """
 	MkaProc setup.
 
-	Copyright (c) 2006-2007 by Nyaochi
+	Copyright (c) 2009 by rin_ne
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -35,7 +35,8 @@ setup(
 	py_modules=[
 		"mkaproc",
 		"Matroska",
-		"textfile"
+                "Config",
+		"textfile",
 		],
 	console=['mkaproc.py'],
 	options={"py2exe": {"packages": ["encodings"]}},
