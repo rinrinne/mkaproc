@@ -5,21 +5,21 @@
   <matroska>
     <cuesheet description="CUE Sheet">
       <filter type="mp3">
-	<path>/path/to/command1</path>
-	<path>/path/to/command2</path>
+    <path>/path/to/command1</path>
+    <path>/path/to/command2</path>
         <command>cueproc</command>
         <option>-c lame_eyed3 -x "/path/to/lame" -p "-V3 --vbr-new --quiet" -d "${ARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
         <thumb />
       </filter>
       <filter type="ogg">
-	<path>/path/to/command</path>
+    <path>/path/to/command</path>
         <command>cueproc</command>
         <option>-c oggenc -x "/path/to/oggenc2" -p "-q 6" -d "${ARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
       </filter>
     </cuesheet>
     <cover description="Cover Image">
       <filter>
-	<path>/path/to/command</path>
+    <path>/path/to/command</path>
         <command>/path/to/convert</command>
         <option>-resize 256x256</option>
         <format>s_%s</format>
