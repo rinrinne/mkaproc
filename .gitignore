@@ -1,6 +1,8 @@
 Thumbs.db
 dist
 build
+Draft
 *~
 *.pyc
 *.bak
+test.*
