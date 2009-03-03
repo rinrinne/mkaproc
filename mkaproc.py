@@ -19,8 +19,10 @@ def delete_files(items):
 			os.remove(item.name)
 
 def exec_filter(path, cmd, charset):
+	list = path[:]
 	orig_path = os.environ['path']
-	os.environ['path'] = os.pathsep.join((path, orig_path))
+	list.append(orig_path)
+	os.environ['path'] = os.pathsep.join(list)
 	os.system(' '.join(cmd).encode(charset))
 	os.environ['path'] = orig_path
 
