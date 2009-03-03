@@ -28,7 +28,7 @@ class Filter:
 		self.command = None
 		self.option = None
 		self.format = "s_%s"
-		self.thumb = False
+		self.thumb = None
 
 	def __repr__(self):
 		"""String representation."""
@@ -123,7 +123,7 @@ class Config:
 			if elem.tag == u'format':
 				flt.format  = elem.text
 			if elem.tag == u'thumb':
-				flt.thumb   = True
+				flt.thumb   = elem.text
 		
 		if not flt.command:
 			return None

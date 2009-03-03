@@ -187,23 +187,24 @@ if __name__ == '__main__':
 				if item.type == "cover":
 					flt = item.filters[0]
 					thumbfile = flt.format % item.name
-					cmd = [flt.command, flt.option, "\"%s\"" % item.name, "\"%s\"" % thumbfile]
+					option = flt.option
+					option = option.replace(u'__COVER__', item.name)
+					option = option.replace(u'__THUMB__', thumbfile)
+					cmd = [flt.command, option]
 					exec_filter(flt.path, cmd, options.syscharset)
 					
 					obj = Matroska.Item()
 					obj.name = thumbfile
 					deletes.append(obj)
-					
 			
 			# cuesheet convert
 			for sheet in sheets:
 				flt = sheet.filters[0]
 				cmd = [flt.command, flt.option]
 				if flt.thumb:
-					cmd.append("--albumart-files \"%s\"" % thumbfile)
+					thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
+					cmd.append(thumb)
 				cmd.append(sheet.name)
-#				print "cmdline: %s" % ' '.join(cmd).encode(options.syscharset)
-				
 				exec_filter(flt.path, cmd, options.syscharset)
 
 			# delete extract file
