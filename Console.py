@@ -26,12 +26,14 @@ class Console:
             sys.stderr.write(line)
             sys.stderr.write('\n')
         if self.executable:
-            orig_path = os.environ['path']
-            os.environ['path'] = os.pathsep.join(self.path + [orig_path])
+            if len(self.path)>0:
+                orig_path = os.environ['path']
+                os.environ['path'] = os.pathsep.join(self.path + [orig_path])
 
             ret = os.system(line.encode(self.syscharset))
-
-            os.environ['path'] = orig_path
+            
+            if len(self.path)>0:
+                os.environ['path'] = orig_path
             return ret
         else:
             return -1
