@@ -10,10 +10,6 @@ from textfile import *
 
 VERSION = '1.0'
 
-MSG_NOELEMENT   = u'element not found'
-MSG_NOELEMTEXT  = u'element text not found'
-MSG_NODIRECTORY = u'directory not found'
-
 def delete_files(items):
 	for item in items:
 		if(item.name and os.path.isfile(item.name)):
