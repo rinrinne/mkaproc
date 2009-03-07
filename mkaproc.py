@@ -37,10 +37,10 @@ if __name__ == '__main__':
 		version="MkaProc %s" % VERSION
 		)
 	parser.add_option(
-		"-c", "--output",
-		action="store", type="string", dest="output",
+		"-f", "--filter",
+		action="store", type="string", dest="filter",
 		default=None,
-		help="Specify a output file format. The default value for this option is '%default'."
+		help="Specify a filter for cuesheet. The default value for this option is '%default'."
 		)
 	parser.add_option(
 		"--target",
@@ -61,7 +61,7 @@ if __name__ == '__main__':
 		help="Specify a charset for the attached text(s). The default value for this option is '%default'."
 		)
 	parser.add_option(
-		"-f", "--config",
+		"-c", "--config",
 		action="store", type="string", dest="configfile",
 		default="config.xml",
 		help="Specify a cofiguration file. The default value for this option is '%default'."
@@ -151,7 +151,7 @@ if __name__ == '__main__':
 					
 					# CUE Sheet
 					if(cont.type == "cuesheet" and attach.extracted):
-						filters = cont.getfilters(options.output)
+						filters = cont.getfilters(options.filter)
 						if len(filters) > 0:
 							convert = Convert()
 							convert.type = cont.type
