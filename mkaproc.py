@@ -11,7 +11,7 @@ from textfile import *
 
 class MkaProc(ProcBase.ProcBase):
 	def __init__(self, config):
-		self.config = config
+		ProcBase.ProcBase.__init__(self, config)
 		
 	def run(self, options, args):
 		
