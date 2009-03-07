@@ -2,7 +2,8 @@
 
 import os, os.path, sys, string, re
 import xml.etree.ElementTree as ET
-	
+import Console
+
 INFOCMD    = u'mkvinfo'
 EXTRACTCMD = u'mkvextract'
 
@@ -161,6 +162,7 @@ class Matroska:
 		returns = []
 		extcmd = os.path.normpath(self.config.toolpath + EXTRACTCMD)
 		extopt = ""
+		console = Console.Console(self.config.syscharset)
 		
 		for item in items:
 			if item.name is not None:
@@ -182,7 +184,7 @@ class Matroska:
 			for track in tracks:
 				cmd.append(" %s:\"%s\"" % (track.number, track.name))
 			
-			ret = os.system(" ".join(cmd).encode(self.config.syscharset))
+			ret = console.execute(cmd)
 			returns.append((ret, tracks))
 			
 			
@@ -194,7 +196,7 @@ class Matroska:
 #				cmd.append("%s:\"%s\"" % (attach.id, attach.name))
 				cmd.append("%s:\"%s\"" % (attach.number, attach.name))
 			
-			ret = os.system(" ".join(cmd).encode(self.config.syscharset))
+			ret = console.execute(cmd)
 			returns.append((ret, attachs))
 			
 		# Check extract file exist?

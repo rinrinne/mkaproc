@@ -11,19 +11,19 @@ class Console:
 
     def write(self, line):
         if self.writable:
-            sys.stdout.write(line)
+            sys.stdout.write('[WRITE]: ' + line)
             sys.stdout.write('\n')
 
     def add_path(self, path):
         if 'str' in path.__class__.__name__:
             self.path.append(path)
-        elif 'list' path.__class__.__name__:
+        elif 'list' in path.__class__.__name__:
             self.path += path
 
     def execute(self, cmd):
         line = ' '.join(cmd)
         if self.writable:
-            sys.stderr.write(line)
+            sys.stderr.write('[EXEC]: ' + line)
             sys.stderr.write('\n')
         if self.executable:
             if len(self.path)>0:

@@ -5,6 +5,7 @@ import sys, optparse, codecs, os, os.path, re
 import xml.etree.ElementTree as ET
 import Matroska
 import Config
+import Console
 
 from textfile import *
 
@@ -14,14 +15,6 @@ def delete_files(items):
 	for item in items:
 		if(item.name and os.path.isfile(item.name)):
 			os.remove(item.name)
-
-def exec_filter(path, cmd, charset):
-	list = path[:]
-	orig_path = os.environ['path']
-	list.append(orig_path)
-	os.environ['path'] = os.pathsep.join(list)
-	os.system(' '.join(cmd).encode(charset))
-	os.environ['path'] = orig_path
 
 class Convert:
 	def __init__(self):
@@ -183,12 +176,15 @@ if __name__ == '__main__':
 			for item in items:
 				if item.type == "cover":
 					flt = item.filters[0]
+					console = Console.Console(options.syscharset)
+					console.add_path(flt.path)
 					thumbfile = flt.format % item.name
 					option = flt.option
 					option = option.replace(u'__COVER__', item.name)
 					option = option.replace(u'__THUMB__', thumbfile)
+					
 					cmd = [flt.command, option]
-					exec_filter(flt.path, cmd, options.syscharset)
+					console.execute(cmd)
 					
 					obj = Matroska.Item()
 					obj.name = thumbfile
@@ -197,12 +193,16 @@ if __name__ == '__main__':
 			# cuesheet convert
 			for sheet in sheets:
 				flt = sheet.filters[0]
+				console = Console.Console(options.syscharset)
+				console.add_path(flt.path)
+				
 				cmd = [flt.command, flt.option]
 				if flt.thumb:
 					thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 					cmd.append(thumb)
 				cmd.append(sheet.name)
-				exec_filter(flt.path, cmd, options.syscharset)
+				
+				console.execute(cmd)
 
 			# delete extract file
 			delete_files(atts)
