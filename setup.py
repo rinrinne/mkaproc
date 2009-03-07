@@ -33,11 +33,14 @@ setup(
 	author_email='rin_ne@big.or.jp',
 	url='http://www20.big.or.jp/~rin_ne/',
 	py_modules=[
-		"mkaproc",
+		"startup",
+		"MkaProc",
 		"Matroska",
-                "Config",
+		"Config",
 		"textfile",
+		"Console",
+		"ProcBase",
 		],
-	console=['mkaproc.py'],
+	console=['startup.py'],
 	options={"py2exe": {"packages": ["encodings"]}},
 	)
