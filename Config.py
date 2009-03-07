@@ -62,10 +62,8 @@ class Content:
 					result.append(flt)
 		return result
 
-class Config:
+class Config(Matroska.Config):
 	def __init__(self, file=None):
-		self.syscharset = 'iso8859-1'
-		self.toolpath = None
 		self.contents = []
 		
 		if file:

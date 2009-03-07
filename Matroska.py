@@ -6,6 +6,11 @@ import xml.etree.ElementTree as ET
 INFOCMD    = u'mkvinfo'
 EXTRACTCMD = u'mkvextract'
 
+class Config:
+	def __init__(self):
+		self.syscharset = 'iso8859-1'
+		self.toolpath = None
+
 class Item:
 	def __init__(self):
 		self.number = 0
