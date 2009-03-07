@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import sys, optparse, codecs, os, os.path, re
-import xml.etree.ElementTree as ET
 import Matroska
 import Config
 import Console
@@ -121,6 +120,6 @@ class MkaProc(ProcBase.ProcBase):
 					console.execute(cmd)
 	
 				# delete extract file
-				self.delete_files(atts)
-				self.delete_files(trks)
-				self.delete_files(deletes)
+#				self.delete_files(atts)
+#				self.delete_files(trks)
+#				self.delete_files(deletes)

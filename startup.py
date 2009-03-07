@@ -1,12 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys, optparse, codecs, os, os.path, re
-import xml.etree.ElementTree as ET
-import Matroska
+import sys, optparse, codecs
 import Config
 import Console
-import ProcBase
 import MkaProc
 
 from textfile import *
