@@ -79,12 +79,12 @@ if __name__ == '__main__':
 	try:
 		charset = codecs.lookup(options.syscharset)
 	except LookupError, e:
-		options.syscharset = sys.getdefaultencoding()		
+		options.syscharset = sys.getdefaultencoding()
 
 	try:
 		charset = codecs.lookup(options.atcharset)
 	except LookupError, e:
-		options.atcharset = sys.getdefaultencoding()		
+		options.atcharset = sys.getdefaultencoding()
 
 	# Wrap IO streams.
 	sys.stdout = codecs.getwriter(options.syscharset)(sys.stdout)
