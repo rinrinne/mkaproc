@@ -34,7 +34,9 @@ class MkaProc(ProcBase.ProcBase):
 		if not targets:
 			sys.stderr.write("No target specified.")
 			return 1
-	
+		
+		console = Console.Console(options.syscharset)
+		
 		for target in targets:
 			try:
 				mka.load(target)
@@ -91,8 +93,7 @@ class MkaProc(ProcBase.ProcBase):
 				for item in items:
 					if item.type == "cover":
 						flt = item.filters[0]
-						console = Console.Console(options.syscharset)
-						console.add_path(flt.path)
+						console.appendpath(flt.path)
 						thumbfile = flt.format % item.name
 						option = flt.option
 						option = option.replace(u'__COVER__', item.name)
@@ -100,6 +101,7 @@ class MkaProc(ProcBase.ProcBase):
 						
 						cmd = [flt.command, option]
 						console.execute(cmd)
+						console.poppath()
 						
 						obj = Matroska.Item()
 						obj.name = thumbfile
@@ -108,8 +110,7 @@ class MkaProc(ProcBase.ProcBase):
 				# cuesheet convert
 				for sheet in sheets:
 					flt = sheet.filters[0]
-					console = Console.Console(options.syscharset)
-					console.add_path(flt.path)
+					console.appendpath(flt.path)
 					
 					cmd = [flt.command, flt.option]
 					if flt.thumb:
@@ -118,7 +119,8 @@ class MkaProc(ProcBase.ProcBase):
 					cmd.append(sheet.name)
 					
 					console.execute(cmd)
-	
+					console.poppath()
+					
 				# delete extract file
 				self.delete_files(atts)
 				self.delete_files(trks)

@@ -46,6 +46,8 @@ class CuesheetProc(ProcBase.ProcBase):
 			return 1
 		
 		# Process target
+		console = Console.Console(options.syscharset)
+		
 		for target in targets:
 			if(not os.path.isfile(target)):
 				continue
@@ -61,8 +63,7 @@ class CuesheetProc(ProcBase.ProcBase):
 					cover = cont[0].getfilters(u'all')
 					if(len(cover)):
 						cover = cover[0]
-						console = Console.Console(options.syscharset)
-						console.add_path(cover.path)
+						console.appendpath(cover.path)
 						thumbfile = os.path.join(path, cover.format % options.coverfile)
 						option = cover.option
 						option = option.replace(u'__COVER__', os.path.join(path, options.coverfile))
@@ -70,14 +71,14 @@ class CuesheetProc(ProcBase.ProcBase):
 						
 						cmd = [cover.command, option]
 						console.execute(cmd)
+						console.poppath()
 						
 						obj = Matroska.Item()
 						obj.name = thumbfile
 						deletes.append(obj)
 			
 			# cuesheet
-			console = Console.Console(options.syscharset)
-			console.add_path(flt.path)
+			console.appendpath(flt.path)
 			
 			cmd = [flt.command, flt.option]
 			if(thumbfile is not None and os.path.isfile(thumbfile)):
@@ -86,6 +87,7 @@ class CuesheetProc(ProcBase.ProcBase):
 			cmd.append(target)
 			
 			console.execute(cmd)
+			console.poppath()
 			
 			# delete extract file
 			self.delete_files(deletes)
