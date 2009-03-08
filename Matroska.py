@@ -166,11 +166,11 @@ class Matroska:
 		
 		for item in items:
 			if item.name is not None:
-				if 'Track' in item.__class__.__bases__[0].__name__:
+				if isinstance(item, Track):
 					if item.number is not None:
 						tracks.append(item)
 				
-				elif 'Attachment' in item.__class__.__name__:
+				elif isinstance(item, Attachment):
 					if item.id is not None:
 						attachs.append(item)
 				

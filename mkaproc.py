@@ -120,6 +120,6 @@ class MkaProc(ProcBase.ProcBase):
 					console.execute(cmd)
 	
 				# delete extract file
-#				self.delete_files(atts)
-#				self.delete_files(trks)
-#				self.delete_files(deletes)
+				self.delete_files(atts)
+				self.delete_files(trks)
+				self.delete_files(deletes)

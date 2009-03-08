@@ -15,9 +15,9 @@ class Console:
             sys.stdout.write('\n')
 
     def add_path(self, path):
-        if 'str' in path.__class__.__name__:
+        if isinstance(path, str):
             self.path.append(path)
-        elif 'list' in path.__class__.__name__:
+        elif isinstance(path, list):
             self.path += path
 
     def execute(self, cmd):
