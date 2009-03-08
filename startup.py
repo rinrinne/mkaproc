@@ -5,6 +5,7 @@ import sys, optparse, codecs
 import Config
 import Console
 import MkaProc
+import CuesheetProc
 
 from textfile import *
 
@@ -57,6 +58,12 @@ if __name__ == '__main__':
 		action="store_true", dest="cuesheetmode", default=False,
 		help="Cuesheet mode."
 		)
+	parser.add_option(
+		"--cover",
+		action="store", type="string", dest="coverfile",
+		default=None,
+		help="Specified cover image file. the default value for thes option is '%default'."
+		)
 
 	# Parse command-line arguments.
 	(options, args) = parser.parse_args()
@@ -86,7 +93,7 @@ if __name__ == '__main__':
 	
 	mode = None
 	if options.cuesheetmode:
-		sys.exti(0)
+		mode = CuesheetProc.CuesheetProc(config)
 	else:
 		mode = MkaProc.MkaProc(config)
 	

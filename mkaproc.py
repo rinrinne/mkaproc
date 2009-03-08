@@ -33,7 +33,7 @@ class MkaProc(ProcBase.ProcBase):
 		
 		if not targets:
 			sys.stderr.write("No target specified.")
-			sys.exit(1)
+			return 1
 	
 		for target in targets:
 			try:
