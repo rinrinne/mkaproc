@@ -33,7 +33,7 @@ class CuesheetProc(ProcBase.ProcBase):
 		
 		if options.targets:
 			try:
-				for line in open_textfile(options.targets, 'r', options.syscharset):
+				for line in open_textfile(options.targets, 'r', options.atcharset):
 					line = line.strip()
 					if line.startswith('#'):
 						continue
