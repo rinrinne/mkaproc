@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 import Matroska
 
 PATH_TOOL  = u'mkvtoolnix/path'
+PATH_WORK  = u'workpath'
 
 MSG_NOELEMENT   = u'element not found'
 MSG_NOELEMTEXT  = u'element text not found'
@@ -65,20 +66,30 @@ class Content:
 class Config(Matroska.Config):
 	def __init__(self, file=None):
 		self.contents = []
+		self.workpath = None
 		
 		if file:
 			self.load(file)
 	
 	def __repr__(self):
 		"""String representation."""
-		return '<%r: syscharset=%r, toolpath=%r, contents=%r>' % (
-			self.__class__.__name__, self.syscharset, self.toolpath, self.contents
+		return '<%r: syscharset=%r, toolpath=%r, workpath=%r, contents=%r>' % (
+			self.__class__.__name__, self.syscharset, self.toolpath, self.workpath, self.contents
 		)
 	
 	def load(self, conffile):
 		dom = ET.ElementTree(file=conffile)
 		if dom == None:
 			raise ConfigParseError(u'XML tree not found', conffile, u'')
+		
+		# workpath
+		elem = dom.find(PATH_WORK)
+		if elem != None:
+			text = elem.text
+			if text:
+				text = os.path.abspath(text)
+				if os.path.isdir(text):
+					self.workpath = text + os.sep
 		
 		# mkvtoolnix
 		elem = dom.find(PATH_TOOL)
@@ -87,7 +98,7 @@ class Config(Matroska.Config):
 		if elem != None:
 			text = elem.text
 			if text:
-				text = os.path.normpath(text)
+				text = os.path.abspath(text)
 				if os.path.isdir(text):
 					self.toolpath = text + os.sep
 				else:

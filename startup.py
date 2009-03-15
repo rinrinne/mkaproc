@@ -64,6 +64,12 @@ if __name__ == '__main__':
 		default=None,
 		help="Specified cover image file. the default value for thes option is '%default'."
 		)
+	parser.add_option(
+		"-t", "--workdir",
+		action="store", type="string", dest="workdir",
+		default=None,
+		help="Specified working directory. the default value for thes option is '%default'."
+		)
 
 	# Parse command-line arguments.
 	(options, args) = parser.parse_args()
@@ -90,6 +96,9 @@ if __name__ == '__main__':
 		sys.exit(1)
 	
 	config.syscharset = options.syscharset
+	
+	if options.workdir is not None:
+		config.workpath = options.workdir
 	
 	mode = None
 	if options.cuesheetmode:
