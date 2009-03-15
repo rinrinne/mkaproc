@@ -1,4 +1,5 @@
 <config>
+  <workpath>/path/to/workdir</workpath>
   <mkvtoolnix>
     <path>/path/to/MKVtoolnix</path>
   </mkvtoolnix>
@@ -12,7 +13,7 @@
         <thumb>--albumart-files "__THUMB__"</thumb>
       </filter>
       <filter type="ogg">
-    <path>/path/to/command</path>
+        <path>/path/to/command</path>
         <command>cueproc</command>
         <option>-c oggenc -x "/path/to/oggenc2" -p "-q 6" -d "${ARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
       </filter>
