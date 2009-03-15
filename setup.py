@@ -29,9 +29,9 @@ setup(
 	name='mkaproc',
 	version='1.0',
 	description='Matroska Processor (MkaProc)',
-	author='Hahahaha',
-	author_email='rin_ne@big.or.jp',
-	url='http://www20.big.or.jp/~rin_ne/',
+	author='rin_ne',
+	author_email='rinrin.ne@gmail.com',
+	url='http://iddy.jp/profile/rin_ne',
 	py_modules=[
 		"startup",
 		"MkaProc",
