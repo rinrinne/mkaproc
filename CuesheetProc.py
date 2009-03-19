@@ -33,7 +33,7 @@ class CuesheetProc(ProcBase.ProcBase):
 		
 		if options.targets:
 			try:
-				for line in open_textfile(options.targets, 'r', options.atcharset):
+				for line in open_textfile(options.targets, 'r', options.syscharset):
 					line = line.strip()
 					if line.startswith('#'):
 						continue
@@ -56,6 +56,8 @@ class CuesheetProc(ProcBase.ProcBase):
 			deletes = []
 			[path, name] = os.path.split(target)
 			
+			os.chdir(path.encode(self.config.syscharset))
+			
 			# cover
 			if(options.coverfile is not None and flt.thumb is not None):
 				cont = self.config.getcontents("cover")
@@ -64,9 +66,9 @@ class CuesheetProc(ProcBase.ProcBase):
 					if(len(cover)):
 						cover = cover[0]
 						console.appendpath(cover.path)
-						thumbfile = os.path.join(path, cover.format % options.coverfile)
+						thumbfile = cover.format % options.coverfile
 						option = cover.option
-						option = option.replace(u'__COVER__', os.path.join(path, options.coverfile))
+						option = option.replace(u'__COVER__', options.coverfile)
 						option = option.replace(u'__THUMB__', thumbfile)
 						
 						cmd = [cover.command, option]
@@ -84,7 +86,7 @@ class CuesheetProc(ProcBase.ProcBase):
 			if(thumbfile is not None and os.path.isfile(thumbfile)):
 				thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 				cmd.append(thumb)
-			cmd.append(target)
+			cmd.append(u'"%s"' % name)
 			
 			console.execute(cmd)
 			console.poppath()
