@@ -47,6 +47,7 @@ class CuesheetProc(ProcBase.ProcBase):
 		
 		# Process target
 		console = Console.Console(options.syscharset)
+		basedir = os.path.abspath('.')
 		
 		for target in targets:
 			if(not os.path.isfile(target)):
@@ -82,7 +83,7 @@ class CuesheetProc(ProcBase.ProcBase):
 			# cuesheet
 			console.appendpath(flt.path)
 			
-			cmd = [flt.command, flt.option]
+			cmd = [flt.command, flt.option, u'-b "%s"' % basedir]
 			if(thumbfile is not None and os.path.isfile(thumbfile)):
 				thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 				cmd.append(thumb)
