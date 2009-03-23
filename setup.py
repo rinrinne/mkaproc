@@ -33,14 +33,14 @@ setup(
 	author_email='rinrin.ne@gmail.com',
 	url='http://iddy.jp/profile/rin_ne',
 	py_modules=[
-		"startup",
 		"MkaProc",
+		"MatroskaProc",
 		"Matroska",
 		"Config",
 		"textfile",
 		"Console",
 		"ProcBase",
 		],
-	console=['startup.py'],
+	console=['MkaProc.py'],
 	options={"py2exe": {"packages": ["encodings"]}},
 	)
