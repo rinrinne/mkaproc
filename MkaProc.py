@@ -65,10 +65,16 @@ if __name__ == '__main__':
 		help="Specified cover image file. the default value for thes option is '%default'."
 		)
 	parser.add_option(
-		"-t", "--workdir",
-		action="store", type="string", dest="workdir",
+		"-t", "--workroot",
+		action="store", type="string", dest="workroot",
 		default=None,
-		help="Specified working directory. the default value for thes option is '%default'."
+		help="Specified working root directory. this option is ignored when specified with --cuesheetmode option. the default value for thes option is '%default'."
+		)
+	parser.add_option(
+		"-d", "--destroot",
+		action="store", type="string", dest="destroot",
+		default=None,
+		help="Specified destination root directory. the default value for thes option is '%default'."
 		)
 
 	# Parse command-line arguments.
@@ -97,11 +103,15 @@ if __name__ == '__main__':
 	
 	config.syscharset = options.syscharset
 	
-	if options.workdir is not None:
-		config.workpath = options.workdir
+	if options.workroot is not None:
+		config.workroot = options.workroot
+	
+	if options.destroot is not None:
+		config.o_destroot = options.destroot
 	
 	mode = None
 	if options.cuesheetmode:
+		config.workroot = None
 		mode = CuesheetProc.CuesheetProc(config)
 	else:
 		mode = MatroskaProc.MatroskaProc(config)

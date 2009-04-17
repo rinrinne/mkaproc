@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 import Matroska
 
 PATH_TOOL  = u'mkvtoolnix/path'
-PATH_WORK  = u'workpath'
+ROOT_WORK  = u'workroot'
 
 MSG_NOELEMENT   = u'element not found'
 MSG_NOELEMTEXT  = u'element text not found'
@@ -30,11 +30,12 @@ class Filter:
 		self.option = None
 		self.format = "s_%s"
 		self.thumb = None
+		self.destroot = None
 
 	def __repr__(self):
 		"""String representation."""
-		return '<%r: type=%r, command=%r, option=%r, format=%r, thumb=%r>' % (
-			self.__class__.__name__, self.type, self.command, self.option, self.format, self.thumb
+		return '<%r: type=%r, command=%r, option=%r, format=%r, thumb=%r, destroot=%r>' % (
+			self.__class__.__name__, self.type, self.command, self.option, self.format, self.thumb, self.destroot
 		)
 
 class Content:
@@ -66,15 +67,16 @@ class Content:
 class Config(Matroska.Config):
 	def __init__(self, file=None):
 		self.contents = []
-		self.workpath = None
+		self.workroot = None
+		self.o_destroot = None
 		
 		if file:
 			self.load(file)
 	
 	def __repr__(self):
 		"""String representation."""
-		return '<%r: syscharset=%r, toolpath=%r, workpath=%r, contents=%r>' % (
-			self.__class__.__name__, self.syscharset, self.toolpath, self.workpath, self.contents
+		return '<%r: syscharset=%r, toolpath=%r, workroot=%r, contents=%r>' % (
+			self.__class__.__name__, self.syscharset, self.toolpath, self.workroot, self.contents
 		)
 	
 	def load(self, conffile):
@@ -82,14 +84,14 @@ class Config(Matroska.Config):
 		if dom == None:
 			raise ConfigParseError(u'XML tree not found', conffile, u'')
 		
-		# workpath
-		elem = dom.find(PATH_WORK)
+		# workroot
+		elem = dom.find(ROOT_WORK)
 		if elem != None:
 			text = elem.text
 			if text:
 				text = os.path.abspath(text)
 				if os.path.isdir(text):
-					self.workpath = text + os.sep
+					self.workroot = text + os.sep
 		
 		# mkvtoolnix
 		elem = dom.find(PATH_TOOL)
@@ -126,13 +128,15 @@ class Config(Matroska.Config):
 			if elem.tag == u'path':
 				flt.path.append(os.path.abspath(elem.text))
 			if elem.tag == u'command':
-				flt.command = elem.text
+				flt.command  = elem.text
 			if elem.tag == u'option':
-				flt.option  = elem.text
+				flt.option   = elem.text
 			if elem.tag == u'format':
-				flt.format  = elem.text
+				flt.format   = elem.text
 			if elem.tag == u'thumb':
-				flt.thumb   = elem.text
+				flt.thumb    = elem.text
+			if elem.tag == u'destroot':
+				flt.destroot = elem.text
 		
 		if not flt.command:
 			return None
