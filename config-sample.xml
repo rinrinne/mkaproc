@@ -9,14 +9,15 @@
         <path>/path/to/command1</path>
         <path>/path/to/command2</path>
         <command>cueproc</command>
-        <option>-c lame_eyed3 -x "/path/to/lame" -p "-V3 --vbr-new --quiet" -d "${ARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
+        <option>-c lame_eyed3 -x "/path/to/lame" -p "-V3 --vbr-new --quiet" -d "${ALBUMARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
         <thumb>--albumart-files "__THUMB__"</thumb>
         <destroot>/path/to/destroot</destroot>
       </filter>
       <filter type="ogg">
         <path>/path/to/command</path>
         <command>cueproc</command>
-        <option>-c oggenc -x "/path/to/oggenc2" -p "-q 6" -d "${ARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
+        <option>-c oggenc -x "/path/to/oggenc2" -p "-q 6" -d "${ALBUMARTIST}/${ALBUM}" -w "utf-8" -o "#if{track.has_key('DISCNUMBER')}${DISCNUMBER}-#endif${TRACKNUMBER}-${TITLE}"</option>
+        <destroot>/path/to/destroot</destroot>
       </filter>
     </cuesheet>
     <cover description="Cover Image">
