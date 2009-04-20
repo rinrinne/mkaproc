@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sys, codecs, os
+import sys, codecs, os, os.path
 
 class Console:
     def __init__(self, charset = 'iso8859-1'):
@@ -8,6 +8,12 @@ class Console:
         self.executable = True
         self.syscharset = charset
         self.paths = []
+        self.current = None
+    
+    def root(self, current):
+        unless os.path.isdir(current):
+            os.mkdir(current)
+        self.current = current
     
     def write(self, line):
         if self.writable:
@@ -31,6 +37,7 @@ class Console:
         return ret
     
     def execute(self, cmd):
+        cwd = os.getcwd()
         line = ' '.join(cmd)
         if self.writable:
             sys.stderr.write('[EXEC]: ' + line)
@@ -40,10 +47,16 @@ class Console:
                 orig_path = os.environ['path']
                 pathlist = []
                 for path in self.paths:
-                    pathlist += path
+                    pathlist += path.encode(self.syscharset)
                 os.environ['path'] = os.pathsep.join(pathlist + [orig_path])
             
+            if self.current is not None:
+                os.chdir(self.current.encode(self.syscharset))
+            
             ret = os.system(line.encode(self.syscharset))
+            
+            if self.current is not None:
+                os.chdir(cwd)
             
             if len(self.paths)>0:
                 os.environ['path'] = orig_path

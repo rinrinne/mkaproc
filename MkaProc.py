@@ -104,10 +104,10 @@ if __name__ == '__main__':
 	config.syscharset = options.syscharset
 	
 	if options.workroot is not None:
-		config.workroot = options.workroot
+		config.workroot = options.workroot.decode(options.syscharset)
 	
 	if options.destroot is not None:
-		config.o_destroot = options.destroot
+		config.o_destroot = options.destroot.decode(options.syscharset)
 	
 	mode = None
 	if options.cuesheetmode:
