@@ -13,7 +13,6 @@ class CuesheetProc(ProcBase.ProcBase):
 		ProcBase.ProcBase.__init__(self, config)
 		
 	def run(self, options, args):
-		
 		# get filter
 		cont = self.config.getcontents("cuesheet")[0]
 		filters = cont.getfilters(options.filter)
@@ -21,6 +20,8 @@ class CuesheetProc(ProcBase.ProcBase):
 			sys.stderr.write("Specified filter is not found.")
 			return 1
 		flt = filters[0]
+		if self.config.o_destroot is not None:
+			flt.destroot = self.config.o_destroot
 		
 		# Suit coverfile
 		if(options.coverfile is not None):
@@ -47,10 +48,6 @@ class CuesheetProc(ProcBase.ProcBase):
 		
 		# Process target
 		console = Console.Console(options.syscharset)
-		if self.config.o_destroot is not None:
-			basedir = self.config.o_destroot
-		else:
-			basedir = os.path.abspath('.')
 		
 		for target in targets:
 			if(not os.path.isfile(target)):
@@ -86,7 +83,7 @@ class CuesheetProc(ProcBase.ProcBase):
 			# cuesheet
 			console.appendpath(flt.path)
 			
-			cmd = [flt.command, flt.option, u'-b "%s"' % basedir]
+			cmd = [flt.command, flt.option, u'-b "%s"' % flt.destroot]
 			if(thumbfile is not None and os.path.isfile(thumbfile)):
 				thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 				cmd.append(thumb)

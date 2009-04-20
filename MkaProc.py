@@ -6,6 +6,7 @@ import Config
 import Console
 import MkaProc
 import CuesheetProc
+import MatroskaProc
 
 from textfile import *
 

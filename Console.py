@@ -11,7 +11,7 @@ class Console:
         self.current = None
     
     def root(self, current):
-        unless os.path.isdir(current):
+        if not os.path.isdir(current):
             os.mkdir(current)
         self.current = current
     
@@ -47,8 +47,8 @@ class Console:
                 orig_path = os.environ['path']
                 pathlist = []
                 for path in self.paths:
-                    pathlist += path.encode(self.syscharset)
-                os.environ['path'] = os.pathsep.join(pathlist + [orig_path])
+                    pathlist += path
+                os.environ['path'] = os.pathsep.join(map(lambda x: x.encode(self.syscharset), pathlist) + [orig_path])
             
             if self.current is not None:
                 os.chdir(self.current.encode(self.syscharset))

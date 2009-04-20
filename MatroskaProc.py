@@ -39,11 +39,6 @@ class MatroskaProc(ProcBase.ProcBase):
 		if self.config.workroot is not None:
 			console.root = self.config.workroot
 		
-		if self.config.o_destroot is not None:
-			basedir = self.config.o_destroot
-		else:
-			basedir = os.path.abspath('.')
-		
 		for target in targets:
 			try:
 				mka.load(target)
@@ -117,9 +112,11 @@ class MatroskaProc(ProcBase.ProcBase):
 				# cuesheet convert
 				for sheet in sheets:
 					flt = sheet.filters[0]
+					if self.config.o_destroot is not None:
+						flt.destroot = self.config.o_destroot
 					console.appendpath(flt.path)
 					
-					cmd = [flt.command, flt.option, u'-b "%s"' % basedir]
+					cmd = [flt.command, flt.option, u'-b "%s"' % flt.destroot]
 					if flt.thumb:
 						thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 						cmd.append(thumb)
