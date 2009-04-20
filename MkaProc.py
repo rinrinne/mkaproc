@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys, optparse, codecs
+import sys, optparse, codecs, os.path
 import Config
 import Console
 import MkaProc
@@ -104,10 +104,10 @@ if __name__ == '__main__':
 	config.syscharset = options.syscharset
 	
 	if options.workroot is not None:
-		config.workroot = options.workroot.decode(options.syscharset)
+		config.workroot = os.path.abspath(options.workroot.decode(options.syscharset))
 	
 	if options.destroot is not None:
-		config.o_destroot = options.destroot.decode(options.syscharset)
+		config.o_destroot = os.path.abspath(options.destroot.decode(options.syscharset))
 	
 	mode = None
 	if options.cuesheetmode:

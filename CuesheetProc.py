@@ -47,7 +47,10 @@ class CuesheetProc(ProcBase.ProcBase):
 		
 		# Process target
 		console = Console.Console(options.syscharset)
-		basedir = os.path.abspath('.')
+		if self.config.o_destroot is not None:
+			basedir = self.config.o_destroot
+		else:
+			basedir = os.path.abspath('.')
 		
 		for target in targets:
 			if(not os.path.isfile(target)):

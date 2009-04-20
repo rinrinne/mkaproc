@@ -163,6 +163,8 @@ class Matroska:
 		extcmd = os.path.normpath(self.config.toolpath + EXTRACTCMD)
 		extopt = ""
 		console = Console.Console(self.config.syscharset)
+		if self.config.workroot is not None:
+			console.root = self.config.workroot
 		
 		for item in items:
 			if item.name is not None:

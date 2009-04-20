@@ -36,6 +36,13 @@ class MatroskaProc(ProcBase.ProcBase):
 			return 1
 		
 		console = Console.Console(options.syscharset)
+		if self.config.workroot is not None:
+			console.root = self.config.workroot
+		
+		if self.config.o_destroot is not None:
+			basedir = self.config.o_destroot
+		else:
+			basedir = os.path.abspath('.')
 		
 		for target in targets:
 			try:
@@ -112,7 +119,7 @@ class MatroskaProc(ProcBase.ProcBase):
 					flt = sheet.filters[0]
 					console.appendpath(flt.path)
 					
-					cmd = [flt.command, flt.option]
+					cmd = [flt.command, flt.option, u'-b "%s"' % basedir]
 					if flt.thumb:
 						thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 						cmd.append(thumb)
