@@ -138,6 +138,9 @@ class Config(Matroska.Config):
 			if elem.tag == u'destroot':
 				flt.destroot = elem.text
 		
+		if self.o_destroot is not None:
+			flt.destroot = self.o_destroot
+		
 		if not flt.command:
 			return None
 		else:

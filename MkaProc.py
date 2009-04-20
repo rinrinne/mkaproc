@@ -96,19 +96,21 @@ if __name__ == '__main__':
 	sys.stdout = codecs.getwriter(options.syscharset)(sys.stdout)
 	sys.stderr = codecs.getwriter(options.syscharset)(sys.stderr)
 	
+	if options.workroot is not None:
+		config.workroot = os.path.abspath(options.workroot.decode(options.syscharset))
+	
 	try:
-		config = Config.Config(options.configfile)
+		config = Config.Config()
+		
+		if options.destroot is not None:
+			config.o_destroot = os.path.abspath(options.destroot.decode(options.syscharset))
+		
+		config.load(options.configfile)
 	except Exception, e:
 		sys.stderr.write(str(e) + "\n")
 		sys.exit(1)
 	
 	config.syscharset = options.syscharset
-	
-	if options.workroot is not None:
-		config.workroot = os.path.abspath(options.workroot.decode(options.syscharset))
-	
-	if options.destroot is not None:
-		config.o_destroot = os.path.abspath(options.destroot.decode(options.syscharset))
 	
 	mode = None
 	if options.cuesheetmode:

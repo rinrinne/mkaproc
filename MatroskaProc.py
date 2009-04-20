@@ -112,8 +112,6 @@ class MatroskaProc(ProcBase.ProcBase):
 				# cuesheet convert
 				for sheet in sheets:
 					flt = sheet.filters[0]
-					if self.config.o_destroot is not None:
-						flt.destroot = self.config.o_destroot
 					console.appendpath(flt.path)
 					
 					cmd = [flt.command, flt.option, u'-b "%s"' % flt.destroot]

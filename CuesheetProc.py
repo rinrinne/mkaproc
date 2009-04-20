@@ -20,8 +20,6 @@ class CuesheetProc(ProcBase.ProcBase):
 			sys.stderr.write("Specified filter is not found.")
 			return 1
 		flt = filters[0]
-		if self.config.o_destroot is not None:
-			flt.destroot = self.config.o_destroot
 		
 		# Suit coverfile
 		if(options.coverfile is not None):
