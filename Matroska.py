@@ -11,7 +11,13 @@ class Config:
 	def __init__(self):
 		self.syscharset = 'iso8859-1'
 		self.toolpath = None
-
+		
+	def __repr__(self):
+		"""String representation."""
+		return '<%r: syscharset=%r, toolpath=%r>' % (
+			self.__class__.__name__, self.syscharset, self.toolpath
+		)
+	
 class Item:
 	def __init__(self):
 		self.number = 0
@@ -19,12 +25,24 @@ class Item:
 		self.type = None
 		self.name = None
 		self.extracted = False
+	
+	def __repr__(self):
+		"""String representation."""
+		return '<%r: number=%r, id=%r, type=%r, name=%, extracted=%r>' % (
+			self.__class__.__name__, self.number, self.id, self.type, self.name, self.extracted
+		)
 
 class Track(Item):
 	def __init__(self):
 		Item.__init__(self)
 		self.codec = None
-
+	
+	def __repr__(self):
+		"""String representation."""
+		return '<%r: codec=%r>' % (
+			self.__class__.__name__, self.codec
+		)
+	
 class AudioTrack(Track):
 	def __init__(self):
 		Track.__init__(self)
@@ -50,8 +68,8 @@ class Attachment(Item):
 	
 	def __repr__(self):
 		"""String representation."""
-		return '<%r: number=%r, id=%r, type=%r, name=%r, extracted=%r, desc=%r>' % (
-			self.__class__.__name__, self.number, self.id, self.type, self.name, self.extracted, self.desc
+		return '<%r: desc=%r>' % (
+			self.__class__.__name__, self.desc
 		)
 	
 class Matroska:
@@ -163,6 +181,8 @@ class Matroska:
 		extcmd = os.path.normpath(self.config.toolpath + EXTRACTCMD)
 		extopt = ""
 		console = Console.Console(self.config.syscharset)
+		console.show(self.config.verbose)
+		
 		if self.config.workroot is not None:
 			console.root = self.config.workroot
 		

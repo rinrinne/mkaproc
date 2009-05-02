@@ -36,6 +36,8 @@ class MatroskaProc(ProcBase.ProcBase):
 			return 1
 		
 		console = Console.Console(options.syscharset)
+		console.show(self.config.verbose)
+		
 		if self.config.workroot is not None:
 			console.root = self.config.workroot
 		
@@ -112,9 +114,11 @@ class MatroskaProc(ProcBase.ProcBase):
 				# cuesheet convert
 				for sheet in sheets:
 					flt = sheet.filters[0]
+					
 					console.appendpath(flt.path)
 					
-					cmd = [flt.command, flt.option, u'-b "%s"' % flt.destroot]
+					option = flt.option.replace(u'__DESTROOT__', flt.destroot)
+					cmd = [flt.command, option]
 					if flt.thumb:
 						thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 						cmd.append(thumb)

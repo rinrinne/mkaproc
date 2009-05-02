@@ -20,6 +20,11 @@ if __name__ == '__main__':
 		version="MkaProc %s" % VERSION
 		)
 	parser.add_option(
+		"-v", "--verbose",
+		action="store_true", dest="verbose", default=False,
+		help="Specify verbose mode. The default value for this option is '%default'."
+		)
+	parser.add_option(
 		"-f", "--filter",
 		action="store", type="string", dest="filter",
 		default=None,
@@ -111,6 +116,7 @@ if __name__ == '__main__':
 		sys.exit(1)
 	
 	config.syscharset = options.syscharset
+	config.verbose    = options.verbose
 	
 	mode = None
 	if options.cuesheetmode:

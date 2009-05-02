@@ -15,6 +15,9 @@ class Console:
             os.mkdir(current)
         self.current = current
     
+    def show(self, state):
+        self.writable = state
+    
     def write(self, line):
         if self.writable:
             sys.stdout.write('[WRITE]: ' + line)

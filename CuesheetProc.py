@@ -46,6 +46,7 @@ class CuesheetProc(ProcBase.ProcBase):
 		
 		# Process target
 		console = Console.Console(options.syscharset)
+		console.show(self.config.verbose)
 		
 		for target in targets:
 			if(not os.path.isfile(target)):
@@ -81,7 +82,8 @@ class CuesheetProc(ProcBase.ProcBase):
 			# cuesheet
 			console.appendpath(flt.path)
 			
-			cmd = [flt.command, flt.option, u'-b "%s"' % flt.destroot]
+			option = flt.option.replace(u'__DESTROOT__', flt.destroot)
+			cmd = [flt.command, option]
 			if(thumbfile is not None and os.path.isfile(thumbfile)):
 				thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 				cmd.append(thumb)

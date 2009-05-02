@@ -69,14 +69,15 @@ class Config(Matroska.Config):
 		self.contents = []
 		self.workroot = None
 		self.o_destroot = None
+		self.verbose  = False
 		
 		if file:
 			self.load(file)
 	
 	def __repr__(self):
 		"""String representation."""
-		return '<%r: syscharset=%r, toolpath=%r, workroot=%r, contents=%r>' % (
-			self.__class__.__name__, self.syscharset, self.toolpath, self.workroot, self.contents
+		return '<%r: workroot=%r, o_destroot=%r, verbose=%r, contents=%r>' % (
+			self.__class__.__name__, self.workroot, self.o_destroot, self.verbose, self.contents
 		)
 	
 	def load(self, conffile):
