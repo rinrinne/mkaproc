@@ -181,7 +181,7 @@ class Matroska:
 		extcmd = os.path.normpath(self.config.toolpath + EXTRACTCMD)
 		extopt = ""
 		console = Console.Console(self.config.syscharset)
-		console.show(self.config.verbose)
+		console.writable = self.config.verbose
 		
 		if self.config.workroot is not None:
 			console.root = self.config.workroot

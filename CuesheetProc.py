@@ -46,7 +46,7 @@ class CuesheetProc(ProcBase.ProcBase):
 		
 		# Process target
 		console = Console.Console(options.syscharset)
-		console.show(self.config.verbose)
+		console.writable = self.config.verbose
 		
 		for target in targets:
 			if(not os.path.isfile(target)):
