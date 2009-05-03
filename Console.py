@@ -2,6 +2,8 @@
 
 import sys, codecs, os, os.path
 
+from subprocess import *
+
 class Console:
     def __init__(self, charset = 'iso8859-1'):
         self.writable = False
@@ -23,21 +25,21 @@ class Console:
             os.mkdir(current)
         self.current = current
     
-    def write(self, line, prefix = u'[WRITE]: '):
+    def write(self, line, prefix = u'[WRITE]: ', fd=None):
         if self.writable:
-            sys.stdout.write((prefix + line).encode(self.syscharset))
-            sys.stdout.write('\n')
-            if self.logging:
-                self.log.append(prefix + line)
-                self.log.append('\n')
+            if fd is not None:
+                out = sys.stdout
+            else:
+                out = fd
+            out.write((prefix + line).encode(self.syscharset))
+            out.write('\n')
+        
+        if self.logging:
+            self.log.append(prefix + line)
+            self.log.append('\n')
     
     def writeerr(self, line, prefix = u'[ERROR]: '):
-        if self.writable:
-            sys.stderr.write((prefix + line).encode(self.syscharset))
-            sys.stderr.write('\n')
-            if self.logging:
-                self.log.append(prefix + line)
-                self.log.append('\n')
+        self.write(line, prefix, sys.stderr)
     
     def appendpath(self, path):
         if isinstance(path, str):
@@ -67,25 +69,19 @@ class Console:
                     pathlist += path
                 os.environ['path'] = os.pathsep.join(map(lambda x: x.encode(self.syscharset), pathlist) + [orig_path])
             
-            if self.current is not None:
-                os.chdir(self.current.encode(self.syscharset))
-            
             if self.logging:
-                (ip, op) = os.popen4(line.encode(self.syscharset))
-                ip.close()
+                proc = Popen(line.encode(self.syscharset), shell=True, stdout=PIPE, stderr=STDOUT, cwd=self.current)
                 
-                for line in op:
+                for line in proc.stdout:
                     self.write(line.decode(self.syscharset))
                 
-                ret = op.close()
+                ret = proc.retcode
             else:
-                ret = os.system(line.encode(self.syscharset))
-            
-            if self.current is not None:
-                os.chdir(cwd)
-            
+                ret = call(line.encode(self.syscharset), shell=True, cwd=self.current)
+
             if len(self.paths)>0:
                 os.environ['path'] = orig_path
+            
             return ret
         else:
             return -1
