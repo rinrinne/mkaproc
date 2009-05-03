@@ -82,6 +82,12 @@ if __name__ == '__main__':
 		default=None,
 		help="Specified destination root directory. the default value for thes option is '%default'."
 		)
+	parser.add_option(
+		"-l", "--logfile",
+		action="store", type="string", dest="logfile",
+		default=None,
+		help="Specify logfile for logging output. The default value for this option is '%default'."
+		)
 
 	# Parse command-line arguments.
 	(options, args) = parser.parse_args()
@@ -117,6 +123,7 @@ if __name__ == '__main__':
 	
 	config.syscharset = options.syscharset
 	config.verbose    = options.verbose
+	config.logfile    = options.logfile
 	
 	mode = None
 	if options.cuesheetmode:

@@ -37,6 +37,7 @@ class MatroskaProc(ProcBase.ProcBase):
 		
 		console = Console.Console(options.syscharset)
 		console.writable = self.config.verbose
+		console.logging  = self.config.logfile is not None
 		
 		if self.config.workroot is not None:
 			console.root = self.config.workroot
