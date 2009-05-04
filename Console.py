@@ -62,26 +62,23 @@ class Console:
         line = ' '.join(cmd)
         self.writeerr(line, u'[EXEC]: ')
         if self.executable:
-            if len(self.paths)>0:
-                orig_path = os.environ['path']
-                pathlist = []
-                for path in self.paths:
-                    pathlist += path
-                os.environ['path'] = os.pathsep.join(map(lambda x: x.encode(self.syscharset), pathlist) + [orig_path])
+            pathlist = []
+            for path in self.paths:
+                pathlist += path
+            
+            envmap = os.environ.copy()
+            envmap['PATH'] = os.pathsep.join(map(lambda x: x.encode(self.syscharset), pathlist) + [envmap['PATH']])
             
             if self.logging:
-                proc = Popen(line.encode(self.syscharset), shell=True, stdout=PIPE, stderr=STDOUT, cwd=self.current)
+                proc = Popen(line.encode(self.syscharset), shell=True, stdout=PIPE, stderr=STDOUT, cwd=self.current, env=envmap)
                 
                 for line in proc.stdout:
                     self.write(line.decode(self.syscharset))
                 
                 ret = proc.retcode
             else:
-                ret = call(line.encode(self.syscharset), shell=True, cwd=self.current)
+                ret = call(line.encode(self.syscharset), shell=True, cwd=self.current, env=envmap)
 
-            if len(self.paths)>0:
-                os.environ['path'] = orig_path
-            
             return ret
         else:
             return -1
