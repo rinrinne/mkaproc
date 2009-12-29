@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sys, optparse, codecs, os, os.path, re
+import sys, optparse, codecs, os, os.path, re, glob
 import Matroska
 import Config
 import Console
@@ -66,26 +66,35 @@ class CuesheetProc(ProcBase.ProcBase):
 					cover = cont[0].getfilters(u'all')
 					if(len(cover)):
 						cover = cover[0]
-						console.appendpath(cover.path)
-						thumbfile = cover.format % options.coverfile
-						option = cover.option
-						option = option.replace(u'__COVER__', options.coverfile)
-						option = option.replace(u'__THUMB__', thumbfile)
 						
-						cmd = [cover.command, option]
-						console.execute(cmd)
-						console.poppath()
+						# numbered cover
+						covers = [os.path.join(cover.path, options.coverfile)]
+						(fname, ext) = os.path.splitext(options.coverfile)
+						covers.expand(glob.glob(os.path.join(cover.path, fname + u'_*' + ext)))
 						
-						obj = Matroska.Item()
-						obj.name = thumbfile
-						deletes.append(obj)
+						for coverfile in covers:
+							if os.path.isfile(coverfile):
+								coverfile = os.path.basename(coverfile)
+								thumbfile = cover.format % coverfile
+								option = cover.option
+								option = option.replace(u'__COVER__', coverfile)
+								option = option.replace(u'__THUMB__', thumbfile)
+								
+								console.appendpath(cover.path)
+								cmd = [cover.command, option]
+								console.execute(cmd)
+								console.poppath()
+								
+								obj = Matroska.Item()
+								obj.name = thumbfile
+								deletes.append(obj)
 			
 			# cuesheet
 			console.appendpath(flt.path)
 			
 			option = flt.option.replace(u'__DESTROOT__', flt.destroot)
 			cmd = [flt.command, option]
-			if(thumbfile is not None and os.path.isfile(thumbfile)):
+			if(thumbfile is not None):
 				thumb = flt.thumb.replace(u'__THUMB__', thumbfile)
 				cmd.append(thumb)
 			cmd.append(u'"%s"' % name)
