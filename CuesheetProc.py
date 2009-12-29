@@ -68,9 +68,11 @@ class CuesheetProc(ProcBase.ProcBase):
 						cover = cover[0]
 						
 						# numbered cover
-						covers = [os.path.join(cover.path, options.coverfile)]
+						covers = [options.coverfile]
 						(fname, ext) = os.path.splitext(options.coverfile)
-						covers.expand(glob.glob(os.path.join(cover.path, fname + u'_*' + ext).encode(self.config.syscharset)))
+						ncovers = glob.glob(os.path.join(fname + '_*' + ext))
+						for ncover in ncovers:
+							covers.append(ncover.decode(self.config.syscharset))
 						
 						for coverfile in covers:
 							if os.path.isfile(coverfile.encode(self.config.syscharset)):
