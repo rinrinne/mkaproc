@@ -28,11 +28,11 @@ class CuesheetProc(ProcBase.ProcBase):
 		# Determine targets.
 		targets = []
 		for arg in args:
-			targets.append(os.path.normpath(arg.decode(options.syscharset)).strip('()[]{}'))
+			targets.append(os.path.normpath(arg.decode(self.config.syscharset)).strip('()[]{}'))
 		
 		if options.targets:
 			try:
-				for line in open_textfile(options.targets, 'r', options.syscharset):
+				for line in open_textfile(options.targets, 'r', self.config.syscharset):
 					line = line.strip()
 					if line.startswith('#'):
 						continue
@@ -70,10 +70,10 @@ class CuesheetProc(ProcBase.ProcBase):
 						# numbered cover
 						covers = [os.path.join(cover.path, options.coverfile)]
 						(fname, ext) = os.path.splitext(options.coverfile)
-						covers.expand(glob.glob(os.path.join(cover.path, fname + u'_*' + ext)))
+						covers.expand(glob.glob(os.path.join(cover.path, fname + u'_*' + ext).encode(self.config.syscharset)))
 						
 						for coverfile in covers:
-							if os.path.isfile(coverfile):
+							if os.path.isfile(coverfile.encode(self.config.syscharset)):
 								coverfile = os.path.basename(coverfile)
 								thumbfile = cover.format % coverfile
 								option = cover.option
